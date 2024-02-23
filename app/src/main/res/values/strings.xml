@@ -1,7 +1,14 @@
 <resources>
     <string name="app_name">HomeWorkMVVM</string>
+
+    // login
     <string name="login">Login</string>
     <string name="password">Password</string>
     <string name="username">Username</string>
+    <string name="login_with_user_">Login with User : %1$s</string>
+
+    // Dashboard
     <string name="you_are_successfully_logged_in_welcome_to_dashboard">You are successfully logged in\nWelcome to Dashboard</string>
+    <string name="logout">Logout</string>
+
 </resources>

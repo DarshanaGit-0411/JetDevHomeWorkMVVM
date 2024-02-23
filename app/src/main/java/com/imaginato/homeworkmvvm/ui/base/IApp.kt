@@ -5,6 +5,7 @@ import com.imaginato.homeworkmvvm.domain.di.apiModules
 import com.imaginato.homeworkmvvm.domain.di.databaseModule
 import com.imaginato.homeworkmvvm.domain.di.netModules
 import com.imaginato.homeworkmvvm.domain.di.repositoryModules
+import com.imaginato.homeworkmvvm.domain.di.useCaseModules
 import com.imaginato.homeworkmvvm.domain.di.viewModelModules
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -22,7 +23,7 @@ class IApp : Application() {
             androidLogger(Level.ERROR)
             androidContext(this@IApp)
             modules(
-                databaseModule, netModules, apiModules, repositoryModules, viewModelModules
+                databaseModule, netModules, apiModules, useCaseModules,repositoryModules, viewModelModules
             )
         }
     }

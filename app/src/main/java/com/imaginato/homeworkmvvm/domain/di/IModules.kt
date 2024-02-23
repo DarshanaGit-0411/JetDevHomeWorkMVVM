@@ -1,22 +1,19 @@
 package com.imaginato.homeworkmvvm.domain.di
 
-import android.app.Application
-import androidx.room.Room
 import com.google.gson.FieldNamingPolicy
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import com.imaginato.homeworkmvvm.data.local.demo.DemoDatabase
-import com.imaginato.homeworkmvvm.data.local.demo.DemoDao
-import com.imaginato.homeworkmvvm.data.remote.demo.DemoApi
-import com.imaginato.homeworkmvvm.data.remote.demo.DemoDataRepository
-import com.imaginato.homeworkmvvm.data.remote.demo.DemoRepository
-import com.imaginato.homeworkmvvm.ui.demo.MainActivityViewModel
+import com.imaginato.homeworkmvvm.data.remote.login.LoginApi
+import com.imaginato.homeworkmvvm.data.remote.login.LoginDataRepository
+import com.imaginato.homeworkmvvm.domain.login.LoginRepository
+import com.imaginato.homeworkmvvm.domain.login.usecases.LoginUseCase
+import com.imaginato.homeworkmvvm.ui.login.LoginViewModel
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
-import org.koin.android.ext.koin.androidApplication
 import org.koin.androidx.viewmodel.dsl.viewModel
+import org.koin.core.component.KoinApiExtension
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -26,8 +23,7 @@ private const val BASE_URL = "http://private-222d3-homework5.apiary-mock.com/api
 private const val JET_DEV_DATABASE = "JetDevDatabase"
 
 val databaseModule = module {
-    single { provideDatabase(androidApplication()) }
-    single { provideDao(get()) }
+
 }
 
 val netModules = module {
@@ -38,34 +34,33 @@ val netModules = module {
 }
 
 val apiModules = module {
-    single { provideDemoApi(get()) }
+    single { provideLoginApi(get()) }
 }
 
 val repositoryModules = module {
-    single { provideDemoRepo(get()) }
+    single { provideLoginRepo(get()) }
 }
 
+val useCaseModules = module {
+    single { provideLoginUseCase(get()) }
+}
+
+@OptIn(KoinApiExtension::class)
 val viewModelModules = module {
     viewModel {
-        MainActivityViewModel()
+        LoginViewModel(get())
     }
 }
 
-private fun provideDemoRepo(api: DemoApi): DemoRepository {
-    return DemoDataRepository(api)
+private fun provideLoginRepo(api: LoginApi): LoginRepository {
+    return LoginDataRepository(api)
 }
 
-private fun provideDemoApi(retrofit: Retrofit): DemoApi = retrofit.create(DemoApi::class.java)
-
-private fun provideDatabase(application: Application): DemoDatabase {
-    return Room.databaseBuilder(application, DemoDatabase::class.java, "I-Database")
-        .fallbackToDestructiveMigration()
-        .build()
+private fun provideLoginUseCase(loginRepository: LoginRepository): LoginUseCase {
+    return LoginUseCase(loginRepository)
 }
 
-private fun provideDao(database: DemoDatabase): DemoDao {
-    return database.demoDao
-}
+private fun provideLoginApi(retrofit: Retrofit): LoginApi = retrofit.create(LoginApi::class.java)
 
 private fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
     return Retrofit.Builder()
