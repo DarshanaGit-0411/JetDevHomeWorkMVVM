@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">HomeWorkMVVM</string>
+    <string name="login">Login</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="password">Password</string>
+    <string name="username">Username</string>
+    <string name="you_are_successfully_logged_in_welcome_to_dashboard">You are successfully logged in\nWelcome to Dashboard</string>
 </resources>
