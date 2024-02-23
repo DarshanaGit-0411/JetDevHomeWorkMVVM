@@ -1,5 +1,7 @@
 package com.imaginato.homeworkmvvm.data.remote.login
 
+import com.imaginato.homeworkmvvm.data.local.login.UserDao
+import com.imaginato.homeworkmvvm.data.local.login.UserEntity
 import com.imaginato.homeworkmvvm.data.remote.base.HEADER
 import com.imaginato.homeworkmvvm.data.remote.base.HTTP_ERROR
 import com.imaginato.homeworkmvvm.data.remote.base.NO_INTERNET_CONNECTION
@@ -13,11 +15,13 @@ import com.imaginato.homeworkmvvm.exts.asUserEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.withContext
 import retrofit2.HttpException
 import java.io.IOException
 
 class LoginDataRepository(
     private var api: LoginApi,
+    private val userDao: UserDao,
 ) : LoginRepository {
     override suspend fun callLogin(loginRequest: LoginRequest) = flow {
         try {
@@ -26,6 +30,8 @@ class LoginDataRepository(
                 if (isSuccessful && data != null) {
                     if (body()?.errorCode == STATUS_CODE_SUCCESS) {
                         val user = data.asUserEntity(headers()[HEADER])
+                        //insert userdata in DB
+                        insertUserToDB(user)
                         emit(Result.Success(user))
                     } else {
                         emit(Result.Error(body()?.errorMessage))
@@ -45,5 +51,13 @@ class LoginDataRepository(
             emit(Result.Error("$UNKNOWN_ERROR ${e.message}"))
         }
     }.flowOn(Dispatchers.IO)
+
+    private suspend fun insertUserToDB(userEntity: UserEntity?) {
+        userEntity?.let {
+            withContext(Dispatchers.IO) {
+                userDao.insertUser(it)
+            }
+        }
+    }
 
 }
