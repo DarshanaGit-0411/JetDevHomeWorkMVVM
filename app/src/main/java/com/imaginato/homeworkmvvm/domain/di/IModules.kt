@@ -1,4 +1,4 @@
-package com.imaginato.homeworkmvvm.domain
+package com.imaginato.homeworkmvvm.domain.di
 
 import android.app.Application
 import androidx.room.Room
@@ -22,7 +22,8 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
-private const val BASE_URL = "https://ifconfig.me/"
+private const val BASE_URL = "http://private-222d3-homework5.apiary-mock.com/api/"
+private const val JET_DEV_DATABASE = "JetDevDatabase"
 
 val databaseModule = module {
     single { provideDatabase(androidApplication()) }

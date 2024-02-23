@@ -1,11 +1,11 @@
 package com.imaginato.homeworkmvvm.ui.base
 
 import android.app.Application
-import com.imaginato.homeworkmvvm.domain.apiModules
-import com.imaginato.homeworkmvvm.domain.databaseModule
-import com.imaginato.homeworkmvvm.domain.netModules
-import com.imaginato.homeworkmvvm.domain.repositoryModules
-import com.imaginato.homeworkmvvm.domain.viewModelModules
+import com.imaginato.homeworkmvvm.domain.di.apiModules
+import com.imaginato.homeworkmvvm.domain.di.databaseModule
+import com.imaginato.homeworkmvvm.domain.di.netModules
+import com.imaginato.homeworkmvvm.domain.di.repositoryModules
+import com.imaginato.homeworkmvvm.domain.di.viewModelModules
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
